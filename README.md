@@ -6,6 +6,7 @@ Imagine you are going to deploy an e-commerce website. It’s crucial to conside
 - Scalability: How can your application automatically adjust to fluctuating traffic?
 - Consistency: How do you ensure your application runs the same across all environments?
 - Availability: How can you update your application with zero downtime?
+
 Containerization, using Docker, encapsulates your application and its environment, ensuring it runs consistently everywhere. Kubernetes, a container orchestration platform, automates deployment, scaling, and management, offering:
 
 - Dynamic Scaling: Adjusts application resources based on demand.

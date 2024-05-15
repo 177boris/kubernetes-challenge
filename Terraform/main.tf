@@ -1,15 +1,16 @@
 data "aws_availability_zones" "available" {}
 
 locals {
-  name            = "k8s-resume-challenge"
-  cluster_version = 1.27
-  region          = "eu-west-2"
+  name            = var.project
+  cluster_version = var.cluster_version
+  region          = var.aws_region
 
-  vpc_cidr = "10.0.0.0/16"
+  vpc_cidr = var.vpc_cidr
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
   tags = {
-    Project   = var.project
-    Terraform = "true"
+    Project     = var.project
+    Terraform   = "true"
+    Environment = "Dev"
   }
 }
 
@@ -43,26 +44,39 @@ resource "aws_ecr_repository" "webapp" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.0"
+  version = "~> 20.0"
 
-  cluster_name    = var.project
-  cluster_version = "1.27"
+  cluster_addons = {
+    vpc-cni = {
+      most_recent = true
+    }
+    # coredns = {
+    #   most_recent = true
+    # }
+    # kube-proxy = {
+    #   most_recent = true
+    # }
+  }
 
+  cluster_name                             = local.name
+  cluster_version                          = local.cluster_version
   cluster_endpoint_public_access           = true
-  # enable_cluster_creator_admin_permissions = true
+  enable_cluster_creator_admin_permissions = true
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
+
   eks_managed_node_groups = {
     green = {
-      min_size       = 1
-      max_size       = 1
-      desired_size   = 1
+      min_size     = 1
+      max_size     = 5
+      desired_size = 2
+
       instance_types = ["t3.medium"]
+      capacity_type  = "SPOT"
     }
   }
-  tags = local.tags
 
 }
 
@@ -80,42 +94,66 @@ module "vpc" {
   azs             = local.azs
   private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
-  # intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
 
-  enable_nat_gateway = true
-  single_nat_gateway = true
+  enable_nat_gateway = var.enable_nat_gw
+  single_nat_gateway = var.single_nat_gw
 
-  enable_dns_hostnames = true
-  enable_dns_support   = true
+  # Instances launched into the Public subnet should be assigned a public IP address.
+  map_public_ip_on_launch = var.map_public_ip
 
-  public_subnet_tags = {
-    "kubernetes.io/role/elb" = 1
-  }
+  enable_dns_hostnames = var.enable_dns_hostnames
+  enable_dns_support   = var.enable_dns_support
 
-  private_subnet_tags = {
-    "kubernetes.io/role/internal-elb" = 1
-  }
+  # public_subnet_tags = {
+  #   "kubernetes.io/role/elb" = 1
+  # }
 
-  tags = local.tags
+  # private_subnet_tags = {
+  #   "kubernetes.io/role/internal-elb" = 1
+  # }
+
 }
 
-#################################################### 
+resource "aws_security_group" "node_group_db" {
+  name_prefix = "${local.name}-node-group"
+  description = "Allow DB access"
+  vpc_id      = module.vpc.vpc_id
 
-# resource "aws_ecr_repository" "microservice_a" {
-#   name = "microservice-a"
-# }
+  ingress {
+    description = "DB access"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = [local.vpc_cidr]
+  }
 
-# resource "aws_ecr_repository" "microservice_b" {
-#   name = "microservice-b"
-# }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    # ipv6_cidr_blocks = ["::/0"]
+  }
 
-# output "ecr_repository_url_microservice_a" {
-#   value = aws_ecr_repository.microservice_a.repository_url
-# }
+}
 
-# output "ecr_repository_url_microservice_b" {
-#   value = aws_ecr_repository.microservice_b.repository_url
-# }
+
+resource "aws_iam_policy" "policy" {
+  name = "${local.name}-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ec2:Describe*",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
 
 ####################################################
 # OLD VPC Config

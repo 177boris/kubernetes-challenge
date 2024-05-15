@@ -23,6 +23,6 @@ docker/push : docker/build
 docker/run :
 	docker run -p 80:8080 $(AWS_ECR_ACCOUNT_ID).dkr.ecr.$(AWS_ECR_REGION).amazonaws.com/$(AWS_ECR_REPO)
 
-# docker/test :
-# 	#curl -XPOST 'http://localhost:9000/2015-03-31/functions/function/invocations' -d '{}'
-# 	curl -Method POST "http://localhost:9000/2015-03-31/functions/function/invocations" -Body '{}'
+docker/test :
+	#curl -XPOST 'http://localhost:9000/2015-03-31/functions/function/invocations' -d '{}'
+	curl -Method POST "http://localhost:9000/2015-03-31/functions/function/invocations" -Body '{}'

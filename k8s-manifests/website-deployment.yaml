@@ -1,0 +1,25 @@
+apiVersion: apps/v1 
+kind: Deployment 
+metadata:
+  name: website-deployment
+  labels:
+    app: website-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: website-deployment
+  strategy: {}
+  template:
+    metadata:
+     labels:
+      app: website-deployment
+    spec:
+      containers:
+      - image: 533267165479.dkr.ecr.eu-west-2.amazonaws.com/k8s-resume-challenge
+        name: web-backend
+        resources: {}
+        ports:
+        - containerPort: 80
+        command: ["echo"]
+        args: ["Hello k8s world!"]

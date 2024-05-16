@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ecom-app
+      tier: db
+  template:
+    metadata:
+      labels:
+        app: ecom-app
+        tier: db
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb
+          imagePullPolicy: Always
+          resources: {}
+          ports:
+            - name: http
+              containerPort: 3306
+          env:
+          - name: MYSQL_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: mariadb-config
+                key: mysql_db
+          - name: MYSQL_USER
+            valueFrom:
+              configMapKeyRef:
+                name: mariadb-config
+                key: mysql_user
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secret
+                key: mysql_password
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secret
+                key: mysql_root_password
+          volumeMounts:
+          - name: mariadb-initdb
+            mountPath: /docker-entrypoint-initdb.d    
+      volumes:
+        - name: mariadb-initdb
+          configMap:
+            name: initdb
+               

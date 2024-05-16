@@ -1,25 +1,45 @@
-apiVersion: apps/v1 
-kind: Deployment 
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: website-deployment
-  labels:
-    app: website-deployment
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: website-deployment
-  strategy: {}
+      app: ecom-app
+      tier: frontend
   template:
     metadata:
-     labels:
-      app: website-deployment
+      labels:
+        app: ecom-app
+        tier: frontend
     spec:
       containers:
-      - image: 533267165479.dkr.ecr.eu-west-2.amazonaws.com/k8s-resume-challenge
-        name: web-backend
-        resources: {}
-        ports:
-        - containerPort: 80
-        command: ["echo"]
-        args: ["Hello k8s world!"]
+        - name: php
+          image: 533267165479.dkr.ecr.eu-west-2.amazonaws.com/k8s-resume-challenge:v1.0
+          imagePullPolicy: Always
+          resources: {}
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+          - name: DB_HOST
+            value: "mysql-service"
+          - name: DB_USER
+            valueFrom:
+              configMapKeyRef:
+                name: mariadb-config
+                key: mysql_user
+          - name: DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: mariadb-config
+                key: mysql_db
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secret
+                key: mysql_password
+          - name: MESSAGE
+            value: "Hello k8s world!"
+          # command: ["service apache2 restart"]

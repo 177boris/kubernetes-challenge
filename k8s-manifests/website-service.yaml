@@ -3,11 +3,12 @@ kind: Service
 metadata:
   name: website-service
   labels:
-   app: website-service
+   app: ecom-app
+   tier: frontend
 spec:
   type: LoadBalancer
   selector:
-    app: website-deployment
+    tier: frontend
   ports:
     - protocol: TCP
       port: 80

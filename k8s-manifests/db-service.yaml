@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  labels:
+   app: ecom-app
+   tier: db
+spec:
+  selector:
+    tier: db
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306

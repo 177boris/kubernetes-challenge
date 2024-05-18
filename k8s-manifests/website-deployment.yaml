@@ -40,6 +40,11 @@ spec:
               secretKeyRef:
                 name: mariadb-secret
                 key: mysql_password
+          - name: FEATURE_DARK_MODE
+            valueFrom:
+              configMapKeyRef:
+                name: feature-toggle-config
+                key: FEATURE_DARK_MODE
           - name: MESSAGE
             value: "Hello k8s world!"
           # command: ["service apache2 restart"]

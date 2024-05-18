@@ -51,3 +51,22 @@
 ### Step 6 - Implement Configuration Management
 
 - Already using ConfigMaps to pass DB creds to web app and mariadb pods. 
+
+- Creating a ConfigMap for the feature-toggle-config was straightforward. 
+
+
+### Step 7 - Scale Your Application
+
+- Kubectl scale command was easy to understand, can also edit the deployment to increase number of replicas which is more common. 
+
+` kubectl scale deployment/ecom-web --replicas=6 `
+
+
+### Step 8 - Perform a Rolling Update
+
+- Updated the index.php to include code for enabling/disabling dark mode so I rebuilt the php container and implemented the rolling update easily.  
+
+
+### Step 9 - Roll Back a Deployment
+
+-

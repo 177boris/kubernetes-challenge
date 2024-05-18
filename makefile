@@ -1,5 +1,5 @@
 APP_NAME = k8s-resume-challenge
-APP_VERSION = v1.0
+APP_VERSION = v2.0
 
 AWS_ECR_ACCOUNT_ID = 533267165479
 AWS_ECR_REGION = eu-west-2

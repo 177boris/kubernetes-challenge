@@ -73,6 +73,7 @@ Table of Content:
 
 body {
   font-family: "Fira Sans", sans-serif;
+  background-color: #232425;
   /*Section Fix*/
 }
 body h1, body h2, body h3, body h4, body h5, body h6 {
@@ -123,7 +124,7 @@ ul {
 .check_tittle h2 {
   text-align: center;
   font: 700 48px "Fira Sans", sans-serif;
-  color: #181b1f;
+  color: #9290C3;
   padding-top: 20px;
   position: relative;
 }
@@ -560,21 +561,21 @@ ul {
 }
 .best_business_area .it_works .business_content .media .media-body a {
   font: 500 18px "Fira Sans", sans-serif;
-  color: #181b1f;
+  color: #337ab7;
 }
 .best_business_area .it_works .business_content .media .media-body p {
   font: 400 16px/26px "Fira Sans", sans-serif;
-  color: #2c323a;
   padding-top: 10px;
-  color: #2c323a;
+  color: #9290C3;
   padding-right: 30px;
 }
 .best_business_area .it_works .business_content .media .media-body p span {
   float: right;
   font: 500 18px "Fira Sans", sans-serif;
+  color: #337ab7;
 }
 .best_business_area .it_works .business_content .media:hover .media-body a, .best_business_area .it_works .business_content .media:focus .media-body a {
-  color: #c4a075;
+  color: whitesmoke;
 }
 
 .error-content {

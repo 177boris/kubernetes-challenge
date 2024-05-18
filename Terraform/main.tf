@@ -50,10 +50,16 @@ module "eks" {
     vpc-cni = {
       most_recent = true
     }
+    amazon-cloudwatch-observability = {
+      most_recent = true
+    }
     # coredns = {
     #   most_recent = true
     # }
     # kube-proxy = {
+    #   most_recent = true
+    # }
+    # adot = {
     #   most_recent = true
     # }
   }

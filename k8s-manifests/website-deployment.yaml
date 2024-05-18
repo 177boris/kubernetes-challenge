@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: php
-          image: 533267165479.dkr.ecr.eu-west-2.amazonaws.com/k8s-resume-challenge:v1.0
+          image: 533267165479.dkr.ecr.eu-west-2.amazonaws.com/k8s-resume-challenge:v2.0
           imagePullPolicy: Always
           resources: {}
           ports:

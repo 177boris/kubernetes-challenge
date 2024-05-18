@@ -73,7 +73,6 @@ Table of Content:
 
 body {
   font-family: "Fira Sans", sans-serif;
-  background-color: #232425;
   /*Section Fix*/
 }
 body h1, body h2, body h3, body h4, body h5, body h6 {
@@ -124,7 +123,7 @@ ul {
 .check_tittle h2 {
   text-align: center;
   font: 700 48px "Fira Sans", sans-serif;
-  color: #9290C3;
+  color: #181b1f;
   padding-top: 20px;
   position: relative;
 }
@@ -236,7 +235,7 @@ ul {
 /* End Main Menu css
 ============================================================================================ */
 .menu_bg {
-  background: #fff !important;
+  background: #30353f !important;
   z-index: 9999 !important;
   transition: all 300ms linear 0s;
 }
@@ -561,21 +560,21 @@ ul {
 }
 .best_business_area .it_works .business_content .media .media-body a {
   font: 500 18px "Fira Sans", sans-serif;
-  color: #337ab7;
+  color: #181b1f;
 }
 .best_business_area .it_works .business_content .media .media-body p {
   font: 400 16px/26px "Fira Sans", sans-serif;
+  color: #2c323a;
   padding-top: 10px;
-  color: #9290C3;
+  color: #2c323a;
   padding-right: 30px;
 }
 .best_business_area .it_works .business_content .media .media-body p span {
   float: right;
   font: 500 18px "Fira Sans", sans-serif;
-  color: #337ab7;
 }
 .best_business_area .it_works .business_content .media:hover .media-body a, .best_business_area .it_works .business_content .media:focus .media-body a {
-  color: whitesmoke;
+  color: #c4a075;
 }
 
 .error-content {

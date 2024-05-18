@@ -1,5 +1,3 @@
-data "aws_availability_zones" "available" {}
-
 locals {
   name            = var.project
   cluster_version = var.cluster_version
@@ -34,6 +32,8 @@ data "aws_ami" "eks_default_arm" {
   }
 }
 
+data "aws_availability_zones" "available" {}
+
 resource "aws_ecr_repository" "webapp" {
   name = var.project
 }
@@ -53,10 +53,10 @@ module "eks" {
     amazon-cloudwatch-observability = {
       most_recent = true
     }
+    kube-proxy = {
+      most_recent = true
+    }
     # coredns = {
-    #   most_recent = true
-    # }
-    # kube-proxy = {
     #   most_recent = true
     # }
     # adot = {
@@ -76,7 +76,6 @@ module "eks" {
     ami_type       = "AL2_x86_64"
     instance_types = ["t3.medium"]
   }
-
 
   eks_managed_node_groups = {
     green = {
@@ -124,6 +123,10 @@ module "vpc" {
 
 }
 
+##################################################################################
+# additional configuration
+##################################################################################
+
 resource "aws_security_group" "node_group_db" {
   name_prefix = "${local.name}-node-group"
   description = "Allow DB access"
@@ -147,7 +150,6 @@ resource "aws_security_group" "node_group_db" {
 
 }
 
-
 resource "aws_iam_policy" "policy" {
   name = "${local.name}-policy"
 
@@ -157,6 +159,24 @@ resource "aws_iam_policy" "policy" {
       {
         Action = [
           "ec2:Describe*",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_policy" "observability" {
+  name = "${local.name}-policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:Describe*",
+          "cloudwatch:*"
         ]
         Effect   = "Allow"
         Resource = "*"

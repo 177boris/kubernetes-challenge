@@ -1,5 +1,7 @@
 # k8s-challenge
 
+![CloudWatch Container Map](./Images/map.png)
+
 ## Intro
 Imagine you are going to deploy an e-commerce website. It’s crucial to consider the challenges of modern web application deployment and how containerization and Kubernetes (K8s) offer compelling solutions:
 
@@ -24,3 +26,12 @@ Before you embark on this journey, ensure you are equipped with:
 - GitHub Account: For version control and implementing CI/CD pipelines.
 - Kubernetes Crash Course: This free course from KodeKloud contains a number of helpful labs to get you familiar with K8s basics.
 - E-commerce Application Source Code and DB Scripts: Available at [kodekloudhub/learning-app-ecommerce](https://github.com/kodekloudhub/learning-app-ecommerce). Familiarize yourself with the application structure and database scripts provided.
+
+
+## Observability images
+
+![Pod monitoring](./Images/Pods.png)
+
+![Pod metrics](./Images/Pod-metrics.png)
+
+![Cluster monitoring ](./Images/CloudWatch.png)

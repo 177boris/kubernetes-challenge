@@ -61,6 +61,10 @@
 
 ` kubectl scale deployment/ecom-web --replicas=6 `
 
+- Also did some load testing using the hey cli tool to simulate web traffic to the website.
+
+![Load testing](./Images/load-test1.png)
+
 
 ### Step 8 - Perform a Rolling Update
 
@@ -69,4 +73,6 @@
 
 ### Step 9 - Roll Back a Deployment
 
--
+- Easy to understand and implement rollbacks.
+
+### Step 10 -

@@ -40,12 +40,16 @@
 
 - All pods running now...
 
+- Deployment: Deployments are a great way to manage stateless apps on Kubernetes. They augment Pods with self-healing, scalability, rolling updates, and rollbacks. Behind-the-scenes, Deployments use ReplicaSets to do most of the work with Pods – it’s actually a ReplicaSet that creates, terminates, and otherwise manages Pods, but the Deployment tells the ReplicaSet what to do.
+
 
 ### Step 5 - Expose Your Website
 
 - Figured out using ConfigMaps and Secrets to pass env variables to both DB and Web app. 
 
 - Created services for both mariadb and web app pretty quickly. Tested the app on my browser and the load balancer URL directs me to the web app. Initially, I thought there were issues but my browser tried to access the URL using HTTPS instead of HTTP, obvs wasn't going to work yet...
+
+- Services: The front-end of a Service provides an immutable IP, DNS name and port that is guaranteed not to change for the entire life of the Service. The back-end of a Service uses labels and selectors to load-balance traffic across a potentially dynamic set of application Pods, a record of healthy pods is kept in the endpoint/endpoint slices object.
 
 
 ### Step 6 - Implement Configuration Management
@@ -61,9 +65,11 @@
 
 ` kubectl scale deployment/ecom-web --replicas=6 `
 
-- Also did some load testing using the hey cli tool to simulate web traffic to the website.
+- Also did some load testing using the hey cli tool to simulate web traffic to the website then check out the logs and metrics
 
 ![Load testing](./Images/load-test1.png)
+![Before](./Images/Pods.png)
+![After](./Images/Pod-metrics.png)
 
 
 ### Step 8 - Perform a Rolling Update

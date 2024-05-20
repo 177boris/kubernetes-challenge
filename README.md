@@ -1,4 +1,4 @@
-# k8s-challenge
+# kubernetes-challenge
 
 ![CloudWatch Container Map](./Images/map.png)
 

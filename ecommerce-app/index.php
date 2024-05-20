@@ -24,11 +24,12 @@
             $prefersDarkMode = getenv('FEATURE_DARK_MODE') === 'true';
 
             if ($prefersDarkMode) {
-                echo '<link rel="stylesheet" href="css/style-dark.css">';
+                echo '<link rel="stylesheet" href="css/dark-style.css">';
             } else {
                 echo '<link rel="stylesheet" href="css/style.css">';
             }
         ?>
+        
 <!--        <link href="css/responsive.css" rel="stylesheet">  -->
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

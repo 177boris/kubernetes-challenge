@@ -13,9 +13,9 @@ spec:
       labels:
         app: ecom-app
         tier: frontend
-    # revisionHistoryLimit: 5   # Keep config of 5 previous replicaset configs
-    # progressDeadlineSeconds: 300  # Wait up to 5 mins for pod replica to start before considering rollout to have stalled
-    # minReadySeconds: 10     # New replica must be up and running for 10 seconds, without any issues, before updating/replacing the next one in sequence
+    revisionHistoryLimit: 5   # Keep config of 5 previous replicaset configs
+    progressDeadlineSeconds: 120  # Wait up to 2 mins for pod replica to start before considering rollout to have stalled
+    minReadySeconds: 5     # New replica must be up and running for 10 seconds, without any issues, before updating/replacing the next one in sequence
     # strategy:
     #   type: RollingUpdate 
     #   rollingUpdate:
@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: php
-          image: 533267165479.dkr.ecr.eu-west-2.amazonaws.com/k8s-resume-challenge:v2.0
+          image: 533267165479.dkr.ecr.eu-west-2.amazonaws.com/k8s-resume-challenge:v1.0
           imagePullPolicy: Always
           resources: {}
           ports:
@@ -55,4 +55,22 @@ spec:
                 key: FEATURE_DARK_MODE
           - name: MESSAGE
             value: "Hello k8s world!"
-          # command: ["service apache2 restart"]
+          readinessProbe:
+            httpGet:
+              path: /ready.php
+              port: 80
+            initialDelaySeconds: 10 # Wait 10 seconds before starting probes
+            periodSeconds: 30 # Check every 30 seconds
+            failureThreshold: 2 # Mark unhealthy after 2 consecutive failures
+          livenessProbe:
+            httpGet:
+              path: /health-check.php
+              port: 80
+            initialDelaySeconds: 10 # Wait 10 seconds before starting probes
+            periodSeconds: 5 # Check every 5 seconds
+            failureThreshold: 2 # Mark unhealthy after 2 consecutive failures
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/bash", "-c", "sleep 10"] # prevent downtime on rolling deployments, requests aren't sent too early
+        

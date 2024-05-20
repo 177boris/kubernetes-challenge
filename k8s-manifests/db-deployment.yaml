@@ -22,6 +22,10 @@ spec:
           ports:
             - name: http
               containerPort: 3306
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/bash", "-c", "sleep 20"] # prevent downtime on rolling deployments
           env:
           - name: MYSQL_DATABASE
             valueFrom:

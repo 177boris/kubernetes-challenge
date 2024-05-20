@@ -1,6 +1,6 @@
 ## Thoughts 
 
-- Setting up Docker image for web app was pretty straightforward thanks to previous exp. 
+- Setting up Docker image for web app was pretty straightforward thanks to previous experience. 
 
 - Choosing AWS EKS was a no-brainer as this is the cloud platform I am most familiar with. Also helped that I had an example EKS config in terraform handy. 
 
@@ -65,7 +65,7 @@
 
 ` kubectl scale deployment/ecom-web --replicas=6 `
 
-- Also did some load testing using the hey cli tool to simulate web traffic to the website then check out the logs and metrics
+- Also did some load testing using the hey cli tool to simulate web traffic to the website then check out the logs and metrics. Back here after realising load testing is required in step 10...never to early to try and break things.
 
 ![Load testing](./Images/load-test1.png)
 ![Before](./Images/Pods.png)
@@ -76,9 +76,24 @@
 
 - Updated the index.php to include code for enabling/disabling dark mode so I rebuilt the php container and implemented the rolling update easily.  
 
+- Came across this blog and thought it would be a good idea to try this out. [zero-downtime rolling deployments](https://kunmidevopstories.hashnode.dev/how-to-achieve-real-zero-downtime-in-kubernetes-rolling-deployments-avoiding-broken-client-connections)
+
 
 ### Step 9 - Roll Back a Deployment
 
-- Easy to understand and implement rollbacks.
+- Easy to understand and implement rollbacks. Similar to the rolling update, pods were replaced very quickly and the changes reflected in the browser after a few seconds.
 
-### Step 10 -
+
+### Step 10 - Autoscale Your Application
+
+- Did step 11 first....will be back 
+
+### Step 11 - Implement liveness and readiness probes 
+
+- Read an article about probes and decided to do this before step 10 with my "new found" skills...
+
+- Having a readiness probe set is recommended for applications. Makes sure pods only receive traffic when they are ready to handle requests; the endpoint controller continues to monitor the pods based on the pod’s readiness probe result. When the probe is successful, the endpoints are updated on the service objects to receive traffic.
+
+- Liveness probe is essentially a health check and makes sure the pod/container is running as expected by sending a HTTP request or performing a command on the container and receiving a response. If the pod responds as expected (e.g. with a HTTP status 200) then it passes the health check. Otherwise the pod is terminated and replaced.
+
+- (liveness and readiness probes - K8s docs)[https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/]

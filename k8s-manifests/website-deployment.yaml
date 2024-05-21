@@ -8,14 +8,14 @@ spec:
     matchLabels:
       app: ecom-app
       tier: frontend
+  revisionHistoryLimit: 5   # Keep config of 5 previous replicaset configs
+  progressDeadlineSeconds: 120  # Wait up to 2 mins for pod replica to start before considering rollout to have stalled
+  minReadySeconds: 5     # New replica must be up and running for 5 seconds, without any issues, before updating/replacing the next one in sequence
   template:
     metadata:
       labels:
         app: ecom-app
         tier: frontend
-    revisionHistoryLimit: 5   # Keep config of 5 previous replicaset configs
-    progressDeadlineSeconds: 120  # Wait up to 2 mins for pod replica to start before considering rollout to have stalled
-    minReadySeconds: 5     # New replica must be up and running for 5 seconds, without any issues, before updating/replacing the next one in sequence
     # strategy:
     #   type: RollingUpdate 
     #   rollingUpdate:
@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: php
-          image: 533267165479.dkr.ecr.eu-west-2.amazonaws.com/k8s-resume-challenge:v1.0
+          image: 533267165479.dkr.ecr.eu-west-2.amazonaws.com/k8s-resume-challenge:v2.0
           imagePullPolicy: Always
           resources: {}
           ports:

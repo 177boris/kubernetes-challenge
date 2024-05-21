@@ -79,7 +79,7 @@ module "eks" {
 
   eks_managed_node_groups = {
     green = {
-      name = "node-group-1"
+      name = "green-node-group"
 
       instance_types = ["t3.medium"]
 
@@ -89,7 +89,7 @@ module "eks" {
     }
 
     blue = {
-      name = "node-group-2"
+      name = "blue-node-group"
 
       instance_types = ["t3.medium"]
 
@@ -97,9 +97,18 @@ module "eks" {
       max_size     = 2
       desired_size = 1
     }
+    #     iam_role_additional_policies = [
+    # "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+    # ]
   }
 }
 
+resource "aws_iam_role_policy_attachment" "CloudwatchAgent" {
+  for_each = module.eks.eks_managed_node_groups
+
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+  role       = each.value.iam_role_name
+}
 
 ##################################################################################
 # VPC configuration
@@ -133,67 +142,4 @@ module "vpc" {
     "kubernetes.io/role/internal-elb" = 1
   }
 
-}
-
-
-##################################################################################
-# additional configuration
-##################################################################################
-
-resource "aws_security_group" "node_group_db" {
-  name_prefix = "${local.name}-node-group"
-  description = "Allow DB access"
-  vpc_id      = module.vpc.vpc_id
-
-  ingress {
-    description = "DB access"
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = [local.vpc_cidr]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-    # ipv6_cidr_blocks = ["::/0"]
-  }
-
-}
-
-resource "aws_iam_policy" "policy" {
-  name = "${local.name}-policy"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "ec2:Describe*",
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
-}
-
-resource "aws_iam_policy" "observability" {
-  name = "${local.name}-policy"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "logs:Describe*",
-          "cloudwatch:*"
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
 }

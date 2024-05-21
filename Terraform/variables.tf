@@ -28,26 +28,26 @@ variable "vpc_cidr" {
 }
 
 variable "enable_nat_gw" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "single_nat_gw" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "map_public_ip" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "enable_dns_hostnames" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "enable_dns_support" {
-  type = bool
+  type    = bool
   default = true
 }

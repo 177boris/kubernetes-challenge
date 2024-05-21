@@ -15,7 +15,7 @@ spec:
         tier: frontend
     revisionHistoryLimit: 5   # Keep config of 5 previous replicaset configs
     progressDeadlineSeconds: 120  # Wait up to 2 mins for pod replica to start before considering rollout to have stalled
-    minReadySeconds: 5     # New replica must be up and running for 10 seconds, without any issues, before updating/replacing the next one in sequence
+    minReadySeconds: 5     # New replica must be up and running for 5 seconds, without any issues, before updating/replacing the next one in sequence
     # strategy:
     #   type: RollingUpdate 
     #   rollingUpdate:

@@ -46,6 +46,14 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.0"
 
+  cluster_name                             = local.name
+  cluster_version                          = local.cluster_version
+  cluster_endpoint_public_access           = true
+  enable_cluster_creator_admin_permissions = true
+
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
+
   cluster_addons = {
     vpc-cni = {
       most_recent = true
@@ -64,14 +72,6 @@ module "eks" {
     # }
   }
 
-  cluster_name                             = local.name
-  cluster_version                          = local.cluster_version
-  cluster_endpoint_public_access           = true
-  enable_cluster_creator_admin_permissions = true
-
-  vpc_id     = module.vpc.vpc_id
-  subnet_ids = module.vpc.private_subnets
-
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
     instance_types = ["t3.medium"]
@@ -79,15 +79,27 @@ module "eks" {
 
   eks_managed_node_groups = {
     green = {
-      min_size     = 1
-      max_size     = 5
-      desired_size = 2
+      name = "node-group-1"
 
-      # capacity_type = "SPOT"
+      instance_types = ["t3.medium"]
+
+      min_size     = 1
+      max_size     = 3
+      desired_size = 2
+    }
+
+    blue = {
+      name = "node-group-2"
+
+      instance_types = ["t3.medium"]
+
+      min_size     = 1
+      max_size     = 2
+      desired_size = 1
     }
   }
-
 }
+
 
 ##################################################################################
 # VPC configuration
@@ -113,13 +125,13 @@ module "vpc" {
   enable_dns_hostnames = var.enable_dns_hostnames
   enable_dns_support   = var.enable_dns_support
 
-  # public_subnet_tags = {
-  #   "kubernetes.io/role/elb" = 1
-  # }
+  public_subnet_tags = {
+    "kubernetes.io/role/elb" = 1
+  }
 
-  # private_subnet_tags = {
-  #   "kubernetes.io/role/internal-elb" = 1
-  # }
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = 1
+  }
 
 }
 

@@ -11,6 +11,10 @@ variable "aws_region" {
   default = "eu-west-2"
 }
 
+variable "profile" {
+  type    = string
+}
+
 variable "cluster_version" {
   type        = string
   default     = "1.29"

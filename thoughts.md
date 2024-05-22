@@ -89,6 +89,9 @@
 
 - Did step 11 first....will be back 
 
+- Built the horizontal pod autoscaler to scale the deployment as traffic increases on the website-deployment. Also added resource limits to the pods in that deployment.
+
+
 ### Step 11 - Implement liveness and readiness probes 
 
 - Read an article about probes and decided to do this before step 10 with my "new found" skills...

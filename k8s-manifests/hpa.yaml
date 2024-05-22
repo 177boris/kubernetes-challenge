@@ -1,0 +1,20 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: 
+  app: ecom-app
+  tier: frontend
+spec:
+  scaleTargetRef:
+    name: website-deployment
+    apiVersion: apps/v1
+    kind: Deployment
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:  
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
+    

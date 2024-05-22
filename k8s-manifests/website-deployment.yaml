@@ -26,7 +26,12 @@ spec:
         - name: php
           image: 533267165479.dkr.ecr.eu-west-2.amazonaws.com/k8s-resume-challenge:v2.0
           imagePullPolicy: Always
-          resources: {}
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "128Mi"
+            requests:
+              cpu: "200m"
           ports:
             - name: http
               containerPort: 80

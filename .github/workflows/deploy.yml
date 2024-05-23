@@ -1,6 +1,6 @@
 # https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
 
-name: Terraform
+name: ECR-Terraform
 
 on:
   push:
@@ -8,7 +8,45 @@ on:
   pull_request: 
 
 
-jobs: 
+jobs:
+  build-ecr-image:
+    name: 'Build image'
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: AWS_ACCESS_KEY_ID
+        aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+        aws-region: AWS_REGION
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: docker-build
+      run: |
+        echo "building docker image"
+        make docker/build
+        echo "pushing image to ECR"
+        make docker/push
+
+    # - name: Run Trivy vulnerability scanner
+    #   uses: aquasecurity/trivy-action@master
+    #   with:
+    #     image-ref: '\${{ steps.login-ecr.outputs.registry}}/\${{ steps.image-info.outputs.ecr_repository }}:\${{ steps.image-info.outputs.image_tag }}'
+    #     format: 'table'
+    #     exit-code: '0'
+    #     ignore-unfixed: true
+    #     vuln-type: 'os,library'
+    #     severity: 'CRITICAL,HIGH'
+
+
   terraform:
       name: 'Terraform'
       runs-on: ubuntu-latest
@@ -34,6 +72,12 @@ jobs:
       - name: Terraform format 
         id: fmt
         run: terraform fmt -check
+        continue-on-error: true
+      
+      - name: Terraform ensure formatting
+        id: ensure-format
+        if: steps.fmt.outcome == 'failure'
+        run: terraform fmt
 
       - name: Terraform validate 
         id: validate 

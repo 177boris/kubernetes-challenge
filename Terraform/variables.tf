@@ -13,6 +13,7 @@ variable "aws_region" {
 
 variable "profile" {
   type    = string
+  default = "Lanre"
 }
 
 variable "cluster_version" {

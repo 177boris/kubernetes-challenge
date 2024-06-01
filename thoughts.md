@@ -112,6 +112,6 @@
 
 - Liveness probe is essentially a health check and makes sure the pod/container is running as expected by sending a HTTP request or performing a command on the container and receiving a response. If the pod responds as expected (e.g. with a HTTP status 200) then it passes the health check. Otherwise the pod is terminated and replaced.
 
-- (liveness and readiness probes - K8s docs)[https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/]
+- [liveness and readiness probes - K8s docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
 
-!(Liveness and readiness probes) [./Images/deploy.png]
+![Liveness and readiness probes] (./Images/deploy.png)

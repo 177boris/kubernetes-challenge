@@ -114,4 +114,4 @@
 
 - (liveness and readiness probes - K8s docs)[https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/]
 
-(Liveness and readiness probes) [./Images/deploy.png]
+!(Liveness and readiness probes) [./Images/deploy.png]

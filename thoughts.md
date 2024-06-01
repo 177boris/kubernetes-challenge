@@ -91,6 +91,18 @@
 
 - Built the horizontal pod autoscaler to scale the deployment as traffic increases on the website-deployment. Also added resource limits to the pods in that deployment.
 
+- EKS does not install metrics-server by default so I had to install this to the kube-system namespace using: 
+
+` kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml ` 
+
+- To check installation: 
+
+`kubectl get deployment metrics-server -n kube-system `
+
+- Source: [install metrics-server on EKS](https://docs.aws.amazon.com/eks/latest/userguide/metrics-server.html) 
+
+![metrics](./Images/metrics.png)
+
 
 ### Step 11 - Implement liveness and readiness probes 
 

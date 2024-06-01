@@ -1,8 +1,7 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata: 
-  app: ecom-app
-  tier: frontend
+  name: ecom-frontend-hpa
 spec:
   scaleTargetRef:
     name: website-deployment
@@ -16,5 +15,5 @@ spec:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 60
+        averageUtilization: 65
     

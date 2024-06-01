@@ -27,6 +27,7 @@ Before you embark on this journey, ensure you are equipped with:
 - Kubernetes Crash Course: This free course from KodeKloud contains a number of helpful labs to get you familiar with K8s basics.
 - E-commerce Application Source Code and DB Scripts: Available at [kodekloudhub/learning-app-ecommerce](https://github.com/kodekloudhub/learning-app-ecommerce). Familiarize yourself with the application structure and database scripts provided.
 
+![Live app](./Images/live-deploy.png)
 
 ## Observability images
 

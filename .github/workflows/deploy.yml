@@ -1,4 +1,4 @@
-# # https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
+# https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
 
 # name: Build-Push-ECR
 

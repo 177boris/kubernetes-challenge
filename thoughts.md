@@ -15,6 +15,7 @@
 - [AWS Observability best practices](https://aws-observability.github.io/observability-best-practices/)
 - [EKS Workshop](https://www.eksworkshop.com/docs/fundamentals/)
 - [EKS Docs](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
+- [EKS add ons](https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html)
 - [CrashLoopBackoff Error](https://spacelift.io/blog/crashloopbackoff)
 - [Create EKS cluster with Terraform modules](https://antonputra.com/amazon/create-eks-cluster-using-terraform-modules/)
 

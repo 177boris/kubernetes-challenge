@@ -1,11 +1,11 @@
-name: Build TF, build and push ECR image
+name: Terraform plan, build and push ECR image
 
 on:
   push:
     branches: [main]
 
 jobs:
-  terraform:
+  Terraform:
       name: 'Terraform'
       runs-on: ubuntu-latest
       env: 
@@ -50,7 +50,34 @@ jobs:
     #     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     #     run: terraform apply -auto-approve -input=false
 
+  ECR-Build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ secrets.ECR_REPO }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+# ################################################################
 #     steps:
 #     - name: Check out the repo
 #       uses: actions/checkout@v4
@@ -146,6 +173,7 @@ jobs:
 #         # Push the latest tag
 #         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
+################################################################
 #   # build-ecr-image:
 #   #   name: 'Build image'
 #   #   runs-on: ubuntu-latest

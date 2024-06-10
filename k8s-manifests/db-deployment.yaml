@@ -56,5 +56,5 @@ spec:
             name: initdb
         - name: mariadb-pv-storage
           persistentVolumeClaim:
-            claimName: mariadb-pv-claim
+            claimName: mariadb-pvc
                

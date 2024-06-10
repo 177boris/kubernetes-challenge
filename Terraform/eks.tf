@@ -15,6 +15,9 @@ module "eks" {
   subnet_ids = module.vpc.private_subnets
 
   cluster_addons = {
+    aws-ebs-csi-driver = {
+        most_recent = true
+    }
     vpc-cni = {
       most_recent = true
     }
@@ -24,9 +27,9 @@ module "eks" {
     kube-proxy = {
       most_recent = true
     }
-    # coredns = {
-    #   most_recent = true
-    # }
+    coredns = {
+      most_recent = true
+    }
     # adot = {
     #   most_recent = true
     # }
@@ -70,6 +73,13 @@ resource "aws_iam_role_policy_attachment" "CloudwatchAgent" {
   role       = each.value.iam_role_name
 }
 
+resource "aws_iam_role_policy_attachment" "EBS_policy" {
+  for_each = module.eks.eks_managed_node_groups
+
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  role       = each.value.iam_role_name
+}
+
 resource "helm_release" "metrics_server" {
   name = "metrics-server"
 
@@ -78,10 +88,10 @@ resource "helm_release" "metrics_server" {
   namespace  = "kube-system"
   version    = "3.12.1"
 
-  values = [file("${path.module}/metrics-server.yaml")] 
-            # [templatefile("${path.module}/metrics-server.yaml", {
-            #     securePort       = 10250,
-            #     metricResolution = "15s" })] 
+  values = [file("${path.module}/metrics-server.yaml")]
+  # [templatefile("${path.module}/metrics-server.yaml", {
+  #     securePort       = 10250,
+  #     metricResolution = "15s" })] 
 
   depends_on = [module.eks.eks_managed_node_groups]
 }

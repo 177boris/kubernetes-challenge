@@ -126,3 +126,5 @@
 1. Implement Persistent Storage - PersistentVolumeClaim
 
 2. Implement Basic CI/CD Pipeline - GitHub Actions
+
+All Done.

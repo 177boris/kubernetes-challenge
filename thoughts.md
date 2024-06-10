@@ -11,6 +11,9 @@
 
 - The Kubernetes Book - Nigel Poulton 
 - [EKS Reference Architecture - Clowdhaus](https://github.com/clowdhaus/eks-reference-architecture/tree/main)
+- [AWS EKS TF module examples](https://github.com/terraform-aws-modules/terraform-aws-eks/tree/master/examples)
+- [AWS Observability best practices](https://aws-observability.github.io/observability-best-practices/)
+- [EKS Workshop](https://www.eksworkshop.com/docs/fundamentals/)
 - [EKS Docs](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html)
 - [CrashLoopBackoff Error](https://spacelift.io/blog/crashloopbackoff)
 - [Create EKS cluster with Terraform modules](https://antonputra.com/amazon/create-eks-cluster-using-terraform-modules/)
@@ -120,6 +123,5 @@
 ### Extra 
 
 1. Implement Persistent Storage - PersistentVolumeClaim
-
 
 2. Implement Basic CI/CD Pipeline - GitHub Actions
